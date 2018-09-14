@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField('String', 'URL_LAUNCH_LIBRARY', '"https://launchlibrary.net/1.4/"')
     }
     buildTypes {
         release {

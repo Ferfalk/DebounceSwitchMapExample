@@ -2,20 +2,21 @@ package com.ferfalk.debounceswitchmapexample.data;
 
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
+import com.ferfalk.debounceswitchmapexample.data.remote.RestApi;
 
 import io.reactivex.Observable;
 
 public class Repository {
+    private final RestApi restApi;
+
+    public Repository(RestApi restApi) {
+        this.restApi = restApi;
+    }
 
     public Observable<String> doSearch(String search) {
-        return Observable.fromCallable(() -> "You searched for: " + search)
-                .map(s -> {
-                    Log.d("doSearch", "Thread: " + Thread.currentThread().getName());
-                    return s;
-                })
+        return restApi.getNextLaunches(300, search.length(), "verbose")
+                .map(nextLaunchesDTO -> nextLaunchesDTO.getLaunches().get(0).getRocket().getName())
                 .doOnSubscribe(disposable -> Log.d("doSearch", "subscribed"))
-                .doOnDispose(() -> Log.d("doSearch", "disposed"))
-                .delay(3, TimeUnit.SECONDS);
+                .doOnDispose(() -> Log.d("doSearch", "disposed"));
     }
 }

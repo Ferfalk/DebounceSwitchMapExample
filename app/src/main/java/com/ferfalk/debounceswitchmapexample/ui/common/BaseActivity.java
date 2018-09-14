@@ -7,13 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.ferfalk.debounceswitchmapexample.R;
 import com.ferfalk.debounceswitchmapexample.ui.common.viewmodel.BaseViewModel;
@@ -49,17 +45,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         mViewDataBinding.executePendingBindings();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     /**
      * @return layout resource id
      */
@@ -76,42 +61,9 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         return mViewDataBinding;
     }
 
-    public void setToolbar(Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-    }
-
-    public void setToolbar(Toolbar toolbar, boolean homeAsUpEnabled) {
-        setToolbar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
-    }
-
-    public void setToolbar(Toolbar toolbar, String title) {
-        toolbar.setTitle(title);
-        setToolbar(toolbar);
-    }
-
-    public void setToolbar(Toolbar toolbar, @StringRes int titleResId) {
-        toolbar.setTitle(titleResId);
-        setToolbar(toolbar);
-    }
-
-    public void setToolbar(Toolbar toolbar, boolean homeAsUpEnabled, String title) {
-        toolbar.setTitle(title);
-        setToolbar(toolbar, homeAsUpEnabled);
-    }
-
-    public void setToolbar(Toolbar toolbar, boolean homeAsUpEnabled, @StringRes int titleResId) {
-        toolbar.setTitle(titleResId);
-        setToolbar(toolbar, homeAsUpEnabled);
-    }
-
     public void showSnack(@NonNull String message) {
         Snackbar.make(mViewDataBinding.getRoot(), message, Snackbar.LENGTH_LONG)
                 .show();
-    }
-
-    private FragmentTransaction getFragmentTransaction() {
-        return getSupportFragmentManager().beginTransaction();
     }
 
     public String getActivityTag() {
