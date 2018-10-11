@@ -2,6 +2,7 @@ package com.ferfalk.debounceswitchmapexample.app;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.ferfalk.debounceswitchmapexample.BuildConfig;
 import com.ferfalk.debounceswitchmapexample.data.Repository;
 import com.ferfalk.debounceswitchmapexample.data.remote.RestApi;
@@ -36,5 +37,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
+        }
     }
 }

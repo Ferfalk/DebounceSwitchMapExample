@@ -1,5 +1,7 @@
 package com.ferfalk.debounceswitchmapexample.data.remote;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.ferfalk.debounceswitchmapexample.BuildConfig;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -21,9 +23,13 @@ public class RetrofitConfig {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(RetrofitConfig::requestInterceptor);
 
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClient.addInterceptor(loggingInterceptor);
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpClient.addInterceptor(loggingInterceptor);
+
+            httpClient.addNetworkInterceptor(new StethoInterceptor());
+        }
         return httpClient.build();
     }
 
